@@ -1,0 +1,62 @@
+{
+  "functions": [
+    {
+      "id": "func1",
+      "name": "calculateTotal",
+      "chinese_name": "计算总价",
+      "description": "计算商品的总价格",
+      "module": "order",
+      "file_path": "/src/order/calculator.js"
+    },
+    {
+      "id": "func2",
+      "name": "getItemPrice",
+      "chinese_name": "获取商品价格",
+      "description": "获取单个商品的价格",
+      "module": "product",
+      "file_path": "/src/product/price.js"
+    },
+    {
+      "id": "func3",
+      "name": "applyDiscount",
+      "chinese_name": "应用折扣",
+      "description": "对总价应用折扣",
+      "module": "discount",
+      "file_path": "/src/discount/apply.js"
+    },
+    {
+      "id": "func4",
+      "name": "validateOrder",
+      "chinese_name": "验证订单",
+      "description": "验证订单的有效性",
+      "module": "order",
+      "file_path": "/src/order/validator.js"
+    }
+  ],
+  "calls": [
+    {
+      "from": "func1",
+      "to": "func2",
+      "call_count": 3,
+      "line_number": 45
+    },
+    {
+      "from": "func1",
+      "to": "func3",
+      "call_count": 1,
+      "line_number": 52
+    },
+    {
+      "from": "func1",
+      "to": "func4",
+      "call_count": 1,
+      "line_number": 30
+    },
+    {
+      "from": "func4",
+      "to": "func2",
+      "call_count": 1,
+      "line_number": 18
+    }
+  ]
+}
