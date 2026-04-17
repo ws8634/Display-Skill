@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>函数调用链可视化 - 知识图谱</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-klay@4.1.2/cytoscape-klay.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .header h1 {
+            color: #1a202c;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 14px;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 20px;
+            min-height: 700px;
+        }
+        
+        .graph-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .graph-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .toolbar-left {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .toolbar-right {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #edf2f7;
+            color: #4a5568;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        #cy {
+            flex: 1;
+            min-height: 550px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f7fafc;
+        }
+        
+        .legend {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .legend h3 {
+            color: #1a202c;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .legend-section {
+            margin-bottom: 20px;
+        }
+        
+        .legend-section h4 {
+            color: #4a5568;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 13px;
+            color: #4a5568;
+        }
+        
+        .legend-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        
+        .legend-icon.circle {
+            border-radius: 50%;
+        }
+        
+        .legend-icon.diamond {
+            transform: rotate(45deg) scale(0.8);
+            border-radius: 2px;
+        }
+        
+        .node-info {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .node-info h4 {
+            color: #4a5568;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .node-info-content {
+            background: #f7fafc;
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 12px;
+            color: #718096;
+        }
+        
+        .node-info-content p {
+            margin-bottom: 6px;
+        }
+        
+        .node-info-content .label {
+            font-weight: 600;
+            color: #4a5568;
+        }
+        
+        .stats-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stats-panel h3 {
+            color: #1a202c;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .stat-item {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-item:nth-child(2) {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        
+        .stat-item:nth-child(3) {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+        
+        .stat-item:nth-child(4) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+        
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+        
+        .data-selector {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        
+        .data-selector label {
+            font-size: 13px;
+            color: #4a5568;
+        }
+        
+        .data-selector select {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            background: white;
+            cursor: pointer;
+        }
+        
+        .zoom-controls {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .search-box {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .search-box input {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            width: 180px;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .tab {
+            padding: 8px 16px;
+            background: #edf2f7;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .tab.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .tab:hover:not(.active) {
+            background: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 函数调用链可视化</h1>
+            <p>交互式知识图谱展示 - 支持节点缩放、拖拽、点击查看详情</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="graph-container">
+                <div class="tabs">
+                    <button class="tab active" onclick="switchDataset('nodes_edges')">代码分析数据 (nodes+edges)</button>
+                    <button class="tab" onclick="switchDataset('call_chains')">API调用链 (call_chains)</button>
+                </div>
+                
+                <div class="graph-toolbar">
+                    <div class="toolbar-left">
+                        <button class="btn btn-icon" onclick="zoomIn()" title="放大">🔍+</button>
+                        <button class="btn btn-icon" onclick="zoomOut()" title="缩小">🔍-</button>
+                        <button class="btn btn-icon" onclick="fitView()" title="适应视图">⬜</button>
+                        <button class="btn btn-secondary" onclick="resetLayout()" title="重置布局">🔄 重置</button>
+                    </div>
+                    
+                    <div class="toolbar-right">
+                        <div class="search-box">
+                            <input type="text" id="searchInput" placeholder="搜索节点名称..." onkeyup="searchNode()">
+                        </div>
+                        <button class="btn btn-primary" onclick="exportData()" title="导出数据">📥 导出</button>
+                    </div>
+                </div>
+                
+                <div id="cy"></div>
+            </div>
+            
+            <div>
+                <div class="legend">
+                    <h3>📖 图例说明</h3>
+                    
+                    <div class="legend-section">
+                        <h4>节点类型</h4>
+                        <div class="legend-item">
+                            <div class="legend-icon circle" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                            <span>入口/根节点 (Root)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon circle" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);"></div>
+                            <span>React组件 (Component)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon circle" style="background: #9ca3af;"></div>
+                            <span>普通函数 (Function)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon diamond" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);"></div>
+                            <span>API端点 (API)</span>
+                        </div>
+                    </div>
+                    
+                    <div class="legend-section">
+                        <h4>边类型</h4>
+                        <div class="legend-item">
+                            <div style="width: 30px; height: 2px; background: #9ca3af;"></div>
+                            <span>普通调用</span>
+                        </div>
+                        <div class="legend-item">
+                            <div style="width: 30px; height: 3px; background: linear-gradient(90deg, #f093fb, #f5576c);"></div>
+                            <span>API调用</span>
+                        </div>
+                        <div class="legend-item">
+                            <div style="width: 30px; height: 2px; background: #60a5fa; border-top: 2px dashed #60a5fa;"></div>
+                            <span>跨文件调用</span>
+                        </div>
+                    </div>
+                    
+                    <div class="node-info">
+                        <h4>📍 节点详情</h4>
+                        <div class="node-info-content" id="nodeDetails">
+                            <p>点击任意节点查看详情</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="stats-panel">
+                    <h3>📊 统计信息</h3>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalNodes">-</div>
+                            <div class="stat-label">总节点数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="totalEdges">-</div>
+                            <div class="stat-label">总边数</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="apiCount">-</div>
+                            <div class="stat-label">API调用</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value" id="maxDepth">-</div>
+                            <div class="stat-label">最大深度</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let cy = null;
+        let currentDataset = 'nodes_edges';
+        
+        const nodesEdgesData = {
+            nodes: [
+                { data: { id: 'CloudWizard', name: 'CloudWizard', nameCn: '云资源创建向导', type: 'Component', filePath: '/frontend/src/pages/cloud/CloudWizard.tsx', isRoot: true } },
+                { data: { id: 'handleCreateCloud', name: 'handleCreateCloud', nameCn: '处理创建云资源', type: 'Function', filePath: '/frontend/src/pages/cloud/CloudWizard.tsx' } },
+                { data: { id: 'createCloud', name: 'createCloud', nameCn: '创建云资源', type: 'API', method: 'POST', path: '/api/clouds', filePath: '/backend/src/routes/cloud.ts' } },
+                { data: { id: 'createCloudService', name: 'createCloudService', nameCn: '创建云资源服务', type: 'Function', filePath: '/backend/src/services/cloudService.ts' } },
+                { data: { id: 'validateCloudConfig', name: 'validateCloudConfig', nameCn: '验证云配置', type: 'Function', filePath: '/backend/src/services/cloudService.ts' } },
+                { data: { id: 'CloudList', name: 'CloudList', nameCn: '云资源列表', type: 'Component', filePath: '/frontend/src/pages/cloud/CloudList.tsx', isRoot: true } },
+                { data: { id: 'fetchClouds', name: 'fetchClouds', nameCn: '获取云列表', type: 'Function', filePath: '/frontend/src/services/cloudApi.ts' } },
+                { data: { id: 'getCloudList', name: 'getCloudList', nameCn: '获取云资源列表', type: 'API', method: 'GET', path: '/api/clouds', filePath: '/backend/src/routes/cloud.ts' } },
+                { data: { id: 'deleteCloudApi', name: 'deleteCloudApi', nameCn: '删除云API', type: 'Function', filePath: '/frontend/src/services/cloudApi.ts' } },
+                { data: { id: 'deleteCloud', name: 'deleteCloud', nameCn: '删除云资源', type: 'API', method: 'DELETE', path: '/api/clouds/:id', filePath: '/backend/src/routes/cloud.ts' } }
+            ],
+            edges: [
+                { data: { id: 'e1', source: 'CloudWizard', target: 'handleCreateCloud', type: 'direct' } },
+                { data: { id: 'e2', source: 'handleCreateCloud', target: 'createCloud', type: 'api_call' } },
+                { data: { id: 'e3', source: 'createCloud', target: 'createCloudService', type: 'cross_file' } },
+                { data: { id: 'e4', source: 'createCloudService', target: 'validateCloudConfig', type: 'direct' } },
+                { data: { id: 'e5', source: 'CloudList', target: 'fetchClouds', type: 'direct' } },
+                { data: { id: 'e6', source: 'fetchClouds', target: 'getCloudList', type: 'api_call' } },
+                { data: { id: 'e7', source: 'CloudList', target: 'deleteCloudApi', type: 'direct' } },
+                { data: { id: 'e8', source: 'deleteCloudApi', target: 'deleteCloud', type: 'api_call' } }
+            ]
+        };
+        
+        const callChainsData = {
+            nodes: [
+                { data: { id: 'CloudWizard', name: 'CloudWizard', nameCn: '云资源创建向导', type: 'Component', filePath: '/frontend/src/pages/cloud/CloudWizard.tsx', isRoot: true } },
+                { data: { id: 'CloudList', name: 'CloudList', nameCn: '云资源列表', type: 'Component', filePath: '/frontend/src/pages/cloud/CloudList.tsx', isRoot: true } },
+                { data: { id: 'UserForm', name: 'UserForm', nameCn: '用户表单', type: 'Component', filePath: '/frontend/src/pages/user/UserForm.tsx', isRoot: true } },
+                { data: { id: 'UserList', name: 'UserList', nameCn: '用户列表', type: 'Component', filePath: '/frontend/src/pages/user/UserList.tsx', isRoot: true } },
+                { data: { id: 'Dashboard', name: 'Dashboard', nameCn: '仪表盘', type: 'Component', filePath: '/frontend/src/pages/Dashboard.tsx', isRoot: true } },
+                { data: { id: 'createCloud', name: 'createCloud', nameCn: '创建云资源', type: 'API', method: 'POST', path: '/api/clouds', filePath: '/backend/src/routes/cloud.ts' } },
+                { data: { id: 'getCloudList', name: 'getCloudList', nameCn: '获取云列表', type: 'API', method: 'GET', path: '/api/clouds', filePath: '/backend/src/routes/cloud.ts' } },
+                { data: { id: 'deleteCloud', name: 'deleteCloud', nameCn: '删除云资源', type: 'API', method: 'DELETE', path: '/api/clouds/:id', filePath: '/backend/src/routes/cloud.ts' } },
+                { data: { id: 'createUser', name: 'createUser', nameCn: '创建用户', type: 'API', method: 'POST', path: '/api/users', filePath: '/backend/src/routes/user.ts' } },
+                { data: { id: 'getUserList', name: 'getUserList', nameCn: '获取用户列表', type: 'API', method: 'GET', path: '/api/users', filePath: '/backend/src/routes/user.ts' } },
+                { data: { id: 'getStatistics', name: 'getStatistics', nameCn: '获取统计数据', type: 'API', method: 'GET', path: '/api/dashboard/statistics', filePath: '/backend/src/routes/dashboard.ts' } },
+                { data: { id: 'getRecentActivities', name: 'getRecentActivities', nameCn: '获取最近活动', type: 'API', method: 'GET', path: '/api/dashboard/activities', filePath: '/backend/src/routes/dashboard.ts' } }
+            ],
+            edges: [
+                { data: { id: 'e1', source: 'CloudWizard', target: 'createCloud', type: 'api_call' } },
+                { data: { id: 'e2', source: 'CloudList', target: 'getCloudList', type: 'api_call' } },
+                { data: { id: 'e3', source: 'CloudList', target: 'deleteCloud', type: 'api_call' } },
+                { data: { id: 'e4', source: 'UserForm', target: 'createUser', type: 'api_call' } },
+                { data: { id: 'e5', source: 'UserList', target: 'getUserList', type: 'api_call' } },
+                { data: { id: 'e6', source: 'Dashboard', target: 'getStatistics', type: 'api_call' } },
+                { data: { id: 'e7', source: 'Dashboard', target: 'getRecentActivities', type: 'api_call' } }
+            ]
+        };
+        
+        function getNodeColor(nodeData) {
+            if (nodeData.isRoot) {
+                return '#667eea';
+            }
+            switch(nodeData.type) {
+                case 'Component':
+                    return '#11998e';
+                case 'API':
+                    return '#f5576c';
+                case 'Function':
+                default:
+                    return '#9ca3af';
+            }
+        }
+        
+        function getNodeShape(nodeData) {
+            return nodeData.type === 'API' ? 'diamond' : 'ellipse';
+        }
+        
+        function getEdgeColor(edgeData) {
+            switch(edgeData.type) {
+                case 'api_call':
+                    return '#f5576c';
+                case 'cross_file':
+                    return '#60a5fa';
+                case 'direct':
+                default:
+                    return '#9ca3af';
+            }
+        }
+        
+        function getEdgeWidth(edgeData) {
+            return edgeData.type === 'api_call' ? 3 : 2;
+        }
+        
+        function initGraph(data) {
+            const elements = [];
+            
+            data.nodes.forEach(node => {
+                const nodeColor = getNodeColor(node.data);
+                const nodeShape = getNodeShape(node.data);
+                const displayName = node.data.nameCn ? `${node.data.name}\n(${node.data.nameCn})` : node.data.name;
+                
+                elements.push({
+                    data: {
+                        ...node.data,
+                        label: node.data.name,
+                        displayName: displayName
+                    },
+                    style: {
+                        'background-color': nodeColor,
+                        'shape': nodeShape,
+                        'width': node.data.isRoot ? 60 : 50,
+                        'height': node.data.isRoot ? 60 : 50,
+                        'border-width': node.data.isRoot ? 3 : 2,
+                        'border-color': node.data.isRoot ? '#4c51bf' : '#ffffff',
+                        'label': 'data(displayName)',
+                        'font-size': 11,
+                        'color': '#1a202c',
+                        'text-wrap': 'wrap',
+                        'text-max-width': 80,
+                        'text-valign': 'center',
+                        'text-halign': 'center'
+                    }
+                });
+            });
+            
+            data.edges.forEach(edge => {
+                const edgeColor = getEdgeColor(edge.data);
+                const edgeWidth = getEdgeWidth(edge.data);
+                
+                elements.push({
+                    data: {
+                        ...edge.data,
+                        label: edge.data.type === 'api_call' ? 'API' : ''
+                    },
+                    style: {
+                        'line-color': edgeColor,
+                        'width': edgeWidth,
+                        'target-arrow-color': edgeColor,
+                        'target-arrow-shape': 'triangle',
+                        'curve-style': 'bezier',
+                        'label': 'data(label)',
+                        'font-size': 10,
+                        'color': edgeColor,
+                        'text-background-color': '#ffffff',
+                        'text-background-opacity': 0.8,
+                        'text-background-padding': '2px'
+                    }
+                });
+            });
+            
+            if (cy) {
+                cy.destroy();
+            }
+            
+            cy = cytoscape({
+                container: document.getElementById('cy'),
+                elements: elements,
+                style: [
+                    {
+                        selector: 'node',
+                        style: {
+                            'transition-property': 'background-color, line-color, width, height',
+                            'transition-duration': '0.2s'
+                        }
+                    },
+                    {
+                        selector: 'node:selected',
+                        style: {
+                            'border-width': 4,
+                            'border-color': '#4c51bf',
+                            'shadow-blur': 15,
+                            'shadow-color': '#667eea',
+                            'shadow-opacity': 0.5
+                        }
+                    },
+                    {
+                        selector: 'node.highlighted',
+                        style: {
+                            'border-width': 4,
+                            'border-color': '#f59e0b',
+                            'shadow-blur': 15,
+                            'shadow-color': '#f59e0b',
+                            'shadow-opacity': 0.5
+                        }
+                    },
+                    {
+                        selector: 'edge:selected',
+                        style: {
+                            'width': 4,
+                            'shadow-blur': 10,
+                            'shadow-color': '#667eea',
+                            'shadow-opacity': 0.5
+                        }
+                    }
+                ],
+                layout: {
+                    name: 'klay',
+                    nodeDimensionsIncludeLabels: true,
+                    animate: true,
+                    animationDuration: 500,
+                    fit: true,
+                    padding: 50,
+                    klay: {
+                        direction: 'DOWN',
+                        edgeRouting: 'ORTHOGONAL',
+                        spacing: 40,
+                        inLayerSpacing: 30,
+                        layerSpacing: 50,
+                        nodePlacement: 'LINEAR_SEGMENTS',
+                        thoroughness: 8
+                    }
+                },
+                userZoomingEnabled: true,
+                userPanningEnabled: true,
+                boxSelectionEnabled: false,
+                autounselectify: true
+            });
+            
+            cy.on('tap', 'node', function(evt) {
+                const node = evt.target;
+                showNodeDetails(node.data());
+            });
+            
+            cy.on('tap', function(evt) {
+                if (evt.target === cy) {
+                    document.getElementById('nodeDetails').innerHTML = '<p>点击任意节点查看详情</p>';
+                }
+            });
+            
+            updateStats(data);
+        }
+        
+        function showNodeDetails(data) {
+            const details = document.getElementById('nodeDetails');
+            let html = '';
+            
+            html += `<p><span class="label">名称:</span> ${data.name}</p>`;
+            if (data.nameCn) {
+                html += `<p><span class="label">中文名:</span> ${data.nameCn}</p>`;
+            }
+            html += `<p><span class="label">类型:</span> ${data.type}</p>`;
+            if (data.filePath) {
+                html += `<p><span class="label">文件:</span> ${data.filePath}</p>`;
+            }
+            if (data.method) {
+                html += `<p><span class="label">方法:</span> ${data.method}</p>`;
+            }
+            if (data.path) {
+                html += `<p><span class="label">路径:</span> ${data.path}</p>`;
+            }
+            
+            const incomingEdges = cy.edges('[target = "' + data.id + '"]');
+            const outgoingEdges = cy.edges('[source = "' + data.id + '"]');
+            
+            html += `<p><span class="label">入边:</span> ${incomingEdges.length}</p>`;
+            html += `<p><span class="label">出边:</span> ${outgoingEdges.length}</p>`;
+            
+            if (incomingEdges.length > 0) {
+                const sources = incomingEdges.map(e => cy.$('#' + e.data('source')).data('name')).join(', ');
+                html += `<p><span class="label">被调用:</span> ${sources}</p>`;
+            }
+            
+            if (outgoingEdges.length > 0) {
+                const targets = outgoingEdges.map(e => cy.$('#' + e.data('target')).data('name')).join(', ');
+                html += `<p><span class="label">调用:</span> ${targets}</p>`;
+            }
+            
+            details.innerHTML = html;
+        }
+        
+        function updateStats(data) {
+            const apiNodes = data.nodes.filter(n => n.data.type === 'API').length;
+            
+            const inDegree = {};
+            const outDegree = {};
+            data.nodes.forEach(n => {
+                inDegree[n.data.id] = 0;
+                outDegree[n.data.id] = 0;
+            });
+            data.edges.forEach(e => {
+                outDegree[e.data.source] = (outDegree[e.data.source] || 0) + 1;
+                inDegree[e.data.target] = (inDegree[e.data.target] || 0) + 1;
+            });
+            
+            const roots = data.nodes.filter(n => n.data.isRoot || inDegree[n.data.id] === 0);
+            let maxDepth = 0;
+            
+            function dfs(nodeId, visited, depth) {
+                if (visited.has(nodeId)) return 0;
+                visited.add(nodeId);
+                maxDepth = Math.max(maxDepth, depth);
+                
+                const outgoing = data.edges.filter(e => e.data.source === nodeId);
+                outgoing.forEach(e => dfs(e.data.target, new Set(visited), depth + 1));
+            }
+            
+            roots.forEach(r => dfs(r.data.id, new Set(), 1));
+            
+            document.getElementById('totalNodes').textContent = data.nodes.length;
+            document.getElementById('totalEdges').textContent = data.edges.length;
+            document.getElementById('apiCount').textContent = apiNodes;
+            document.getElementById('maxDepth').textContent = maxDepth;
+        }
+        
+        function zoomIn() {
+            if (cy) cy.zoom(cy.zoom() * 1.2);
+        }
+        
+        function zoomOut() {
+            if (cy) cy.zoom(cy.zoom() * 0.8);
+        }
+        
+        function fitView() {
+            if (cy) cy.fit(50);
+        }
+        
+        function resetLayout() {
+            const data = currentDataset === 'nodes_edges' ? nodesEdgesData : callChainsData;
+            initGraph(data);
+        }
+        
+        function searchNode() {
+            const input = document.getElementById('searchInput');
+            const query = input.value.toLowerCase().trim();
+            
+            if (!cy) return;
+            
+            cy.elements().removeClass('highlighted');
+            
+            if (query) {
+                const nodes = cy.nodes('[name *= "' + query + '"], [nameCn *= "' + query + '"]');
+                if (nodes.length > 0) {
+                    nodes.addClass('highlighted');
+                    cy.fit(nodes, 50);
+                    showNodeDetails(nodes[0].data());
+                }
+            }
+        }
+        
+        function switchDataset(dataset) {
+            currentDataset = dataset;
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            const data = dataset === 'nodes_edges' ? nodesEdgesData : callChainsData;
+            initGraph(data);
+        }
+        
+        function exportData() {
+            const data = currentDataset === 'nodes_edges' ? nodesEdgesData : callChainsData;
+            const jsonStr = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `function_call_chain_${currentDataset}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            initGraph(nodesEdgesData);
+        });
+    </script>
+</body>
+</html>
