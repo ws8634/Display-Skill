@@ -1,0 +1,304 @@
+{
+  "skill_version": "1.0",
+  "analysis_type": "full",
+  "summary": {
+    "total_files": 12,
+    "total_functions": 25,
+    "api_endpoints": 8,
+    "tsx_components": 5
+  },
+  "nodes": [
+    {
+      "id": "node_001",
+      "type": "Component",
+      "name": "CloudWizard",
+      "qualified_name": "/frontend/src/pages/cloud/CloudWizard.tsx#CloudWizard",
+      "file_path": "/frontend/src/pages/cloud/CloudWizard.tsx",
+      "location": {
+        "start_line": 45,
+        "end_line": 280
+      },
+      "signature": {
+        "parameters": [],
+        "return_type": "JSX.Element",
+        "is_async": false,
+        "is_exported": true
+      },
+      "tags": ["react_component", "page"],
+      "name_cn": "云资源创建向导"
+    },
+    {
+      "id": "node_002",
+      "type": "Function",
+      "name": "handleCreateCloud",
+      "qualified_name": "/frontend/src/pages/cloud/CloudWizard.tsx#handleCreateCloud",
+      "file_path": "/frontend/src/pages/cloud/CloudWizard.tsx",
+      "location": {
+        "start_line": 120,
+        "end_line": 150
+      },
+      "signature": {
+        "parameters": ["event: React.FormEvent"],
+        "return_type": "Promise<void>",
+        "is_async": true,
+        "is_exported": false
+      },
+      "tags": ["handler", "async"],
+      "name_cn": "处理创建云资源"
+    },
+    {
+      "id": "node_003",
+      "type": "API",
+      "name": "createCloud",
+      "qualified_name": "/backend/src/routes/cloud.ts#POST /api/clouds",
+      "file_path": "/backend/src/routes/cloud.ts",
+      "location": {
+        "start_line": 25,
+        "end_line": 45
+      },
+      "signature": {
+        "parameters": ["req: Request", "res: Response"],
+        "return_type": "Promise<void>",
+        "is_async": true,
+        "is_exported": false
+      },
+      "tags": ["api_endpoint", "post"],
+      "method": "POST",
+      "path": "/api/clouds",
+      "name_cn": "创建云资源"
+    },
+    {
+      "id": "node_004",
+      "type": "Function",
+      "name": "createCloudService",
+      "qualified_name": "/backend/src/services/cloudService.ts#createCloudService",
+      "file_path": "/backend/src/services/cloudService.ts",
+      "location": {
+        "start_line": 50,
+        "end_line": 120
+      },
+      "signature": {
+        "parameters": ["config: CloudConfig", "userId: string"],
+        "return_type": "Promise<CloudResource>",
+        "is_async": true,
+        "is_exported": true
+      },
+      "tags": ["service", "business_logic"],
+      "name_cn": "创建云资源服务"
+    },
+    {
+      "id": "node_005",
+      "type": "Function",
+      "name": "validateCloudConfig",
+      "qualified_name": "/backend/src/services/cloudService.ts#validateCloudConfig",
+      "file_path": "/backend/src/services/cloudService.ts",
+      "location": {
+        "start_line": 15,
+        "end_line": 45
+      },
+      "signature": {
+        "parameters": ["config: CloudConfig"],
+        "return_type": "ValidationResult",
+        "is_async": false,
+        "is_exported": false
+      },
+      "tags": ["validation"],
+      "name_cn": "验证云配置"
+    },
+    {
+      "id": "node_006",
+      "type": "API",
+      "name": "getCloudList",
+      "qualified_name": "/backend/src/routes/cloud.ts#GET /api/clouds",
+      "file_path": "/backend/src/routes/cloud.ts",
+      "location": {
+        "start_line": 50,
+        "end_line": 65
+      },
+      "signature": {
+        "parameters": ["req: Request", "res: Response"],
+        "return_type": "Promise<void>",
+        "is_async": true,
+        "is_exported": false
+      },
+      "tags": ["api_endpoint", "get"],
+      "method": "GET",
+      "path": "/api/clouds",
+      "name_cn": "获取云资源列表"
+    },
+    {
+      "id": "node_007",
+      "type": "API",
+      "name": "deleteCloud",
+      "qualified_name": "/backend/src/routes/cloud.ts#DELETE /api/clouds/:id",
+      "file_path": "/backend/src/routes/cloud.ts",
+      "location": {
+        "start_line": 70,
+        "end_line": 85
+      },
+      "signature": {
+        "parameters": ["req: Request", "res: Response"],
+        "return_type": "Promise<void>",
+        "is_async": true,
+        "is_exported": false
+      },
+      "tags": ["api_endpoint", "delete"],
+      "method": "DELETE",
+      "path": "/api/clouds/:id",
+      "name_cn": "删除云资源"
+    },
+    {
+      "id": "node_008",
+      "type": "Component",
+      "name": "CloudList",
+      "qualified_name": "/frontend/src/pages/cloud/CloudList.tsx#CloudList",
+      "file_path": "/frontend/src/pages/cloud/CloudList.tsx",
+      "location": {
+        "start_line": 30,
+        "end_line": 200
+      },
+      "signature": {
+        "parameters": [],
+        "return_type": "JSX.Element",
+        "is_async": false,
+        "is_exported": true
+      },
+      "tags": ["react_component", "page"],
+      "name_cn": "云资源列表"
+    },
+    {
+      "id": "node_009",
+      "type": "Function",
+      "name": "fetchClouds",
+      "qualified_name": "/frontend/src/services/cloudApi.ts#fetchClouds",
+      "file_path": "/frontend/src/services/cloudApi.ts",
+      "location": {
+        "start_line": 15,
+        "end_line": 30
+      },
+      "signature": {
+        "parameters": [],
+        "return_type": "Promise<Cloud[]>",
+        "is_async": true,
+        "is_exported": true
+      },
+      "tags": ["api_client", "fetch"],
+      "name_cn": "获取云列表"
+    },
+    {
+      "id": "node_010",
+      "type": "Function",
+      "name": "deleteCloudApi",
+      "qualified_name": "/frontend/src/services/cloudApi.ts#deleteCloudApi",
+      "file_path": "/frontend/src/services/cloudApi.ts",
+      "location": {
+        "start_line": 35,
+        "end_line": 48
+      },
+      "signature": {
+        "parameters": ["cloudId: string"],
+        "return_type": "Promise<void>",
+        "is_async": true,
+        "is_exported": true
+      },
+      "tags": ["api_client", "delete"],
+      "name_cn": "删除云API"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_001",
+      "type": "CALLS",
+      "call_type": "direct",
+      "source": "node_001",
+      "target": "node_002",
+      "source_name": "CloudWizard",
+      "target_name": "handleCreateCloud",
+      "source_type": "Component",
+      "target_type": "Function",
+      "location": {
+        "start_line": 140
+      }
+    },
+    {
+      "id": "edge_002",
+      "type": "CALLS",
+      "call_type": "api_call",
+      "source": "node_002",
+      "target": "node_003",
+      "source_name": "handleCreateCloud",
+      "target_name": "createCloud",
+      "source_type": "Function",
+      "target_type": "API",
+      "is_async": true
+    },
+    {
+      "id": "edge_003",
+      "type": "CALLS",
+      "call_type": "cross_file",
+      "source": "node_003",
+      "target": "node_004",
+      "source_name": "createCloud",
+      "target_name": "createCloudService",
+      "source_type": "API",
+      "target_type": "Function"
+    },
+    {
+      "id": "edge_004",
+      "type": "CALLS",
+      "call_type": "direct",
+      "source": "node_004",
+      "target": "node_005",
+      "source_name": "createCloudService",
+      "target_name": "validateCloudConfig",
+      "source_type": "Function",
+      "target_type": "Function"
+    },
+    {
+      "id": "edge_005",
+      "type": "CALLS",
+      "call_type": "direct",
+      "source": "node_008",
+      "target": "node_009",
+      "source_name": "CloudList",
+      "target_name": "fetchClouds",
+      "source_type": "Component",
+      "target_type": "Function"
+    },
+    {
+      "id": "edge_006",
+      "type": "CALLS",
+      "call_type": "api_call",
+      "source": "node_009",
+      "target": "node_006",
+      "source_name": "fetchClouds",
+      "target_name": "getCloudList",
+      "source_type": "Function",
+      "target_type": "API",
+      "is_async": true
+    },
+    {
+      "id": "edge_007",
+      "type": "CALLS",
+      "call_type": "direct",
+      "source": "node_008",
+      "target": "node_010",
+      "source_name": "CloudList",
+      "target_name": "deleteCloudApi",
+      "source_type": "Component",
+      "target_type": "Function"
+    },
+    {
+      "id": "edge_008",
+      "type": "CALLS",
+      "call_type": "api_call",
+      "source": "node_010",
+      "target": "node_007",
+      "source_name": "deleteCloudApi",
+      "target_name": "deleteCloud",
+      "source_type": "Function",
+      "target_type": "API",
+      "is_async": true
+    }
+  ]
+}
