@@ -1,0 +1,252 @@
+{
+  "project_name": "示例电商系统",
+  "language": "python",
+  "call_chains": [
+    {
+      "chain_id": "checkout_flow",
+      "root_function": {
+        "name": "checkout",
+        "name_cn": "结账",
+        "module": "order_service",
+        "file_path": "/app/services/order_service.py",
+        "line_number": 45,
+        "description": "处理用户结账流程"
+      },
+      "calls": [
+        {
+          "caller": {
+            "name": "checkout",
+            "name_cn": "结账",
+            "module": "order_service"
+          },
+          "callee": {
+            "name": "validate_cart",
+            "name_cn": "验证购物车",
+            "module": "cart_service"
+          },
+          "call_site": {
+            "file_path": "/app/services/order_service.py",
+            "line_number": 52,
+            "column_number": 12
+          },
+          "arguments": ["user_id", "cart_items"],
+          "is_async": false
+        },
+        {
+          "caller": {
+            "name": "checkout",
+            "name_cn": "结账",
+            "module": "order_service"
+          },
+          "callee": {
+            "name": "process_payment",
+            "name_cn": "处理支付",
+            "module": "payment_service"
+          },
+          "call_site": {
+            "file_path": "/app/services/order_service.py",
+            "line_number": 58,
+            "column_number": 12
+          },
+          "arguments": ["user_id", "amount", "payment_method"],
+          "is_async": false
+        },
+        {
+          "caller": {
+            "name": "checkout",
+            "name_cn": "结账",
+            "module": "order_service"
+          },
+          "callee": {
+            "name": "send_confirmation",
+            "name_cn": "发送确认",
+            "module": "notification_service"
+          },
+          "call_site": {
+            "file_path": "/app/services/order_service.py",
+            "line_number": 65,
+            "column_number": 12
+          },
+          "arguments": ["user_id", "order_id"],
+          "is_async": true
+        },
+        {
+          "caller": {
+            "name": "validate_cart",
+            "name_cn": "验证购物车",
+            "module": "cart_service"
+          },
+          "callee": {
+            "name": "check_inventory",
+            "name_cn": "检查库存",
+            "module": "inventory_service"
+          },
+          "call_site": {
+            "file_path": "/app/services/cart_service.py",
+            "line_number": 28,
+            "column_number": 8
+          },
+          "arguments": ["product_id", "quantity"],
+          "is_async": false
+        },
+        {
+          "caller": {
+            "name": "validate_cart",
+            "name_cn": "验证购物车",
+            "module": "cart_service"
+          },
+          "callee": {
+            "name": "apply_promotions",
+            "name_cn": "应用促销",
+            "module": "promotion_service"
+          },
+          "call_site": {
+            "file_path": "/app/services/cart_service.py",
+            "line_number": 35,
+            "column_number": 8
+          },
+          "arguments": ["cart_items", "user_id"],
+          "is_async": false
+        },
+        {
+          "caller": {
+            "name": "process_payment",
+            "name_cn": "处理支付",
+            "module": "payment_service"
+          },
+          "callee": {
+            "name": "charge_card",
+            "name_cn": "扣款",
+            "module": "payment_gateway"
+          },
+          "call_site": {
+            "file_path": "/app/services/payment_service.py",
+            "line_number": 42,
+            "column_number": 12
+          },
+          "arguments": ["card_token", "amount"],
+          "is_async": false
+        },
+        {
+          "caller": {
+            "name": "process_payment",
+            "name_cn": "处理支付",
+            "module": "payment_service"
+          },
+          "callee": {
+            "name": "record_transaction",
+            "name_cn": "记录交易",
+            "module": "transaction_log"
+          },
+          "call_site": {
+            "file_path": "/app/services/payment_service.py",
+            "line_number": 50,
+            "column_number": 12
+          },
+          "arguments": ["user_id", "amount", "status"],
+          "is_async": false
+        }
+      ]
+    }
+  ],
+  "function_metadata": {
+    "checkout": {
+      "name": "checkout",
+      "name_cn": "结账",
+      "module": "order_service",
+      "return_type": "Order",
+      "parameters": [
+        { "name": "user_id", "type": "int" },
+        { "name": "cart_items", "type": "List[CartItem]" }
+      ],
+      "docstring": "处理用户的完整结账流程，包括验证、支付和通知",
+      "visibility": "public"
+    },
+    "validate_cart": {
+      "name": "validate_cart",
+      "name_cn": "验证购物车",
+      "module": "cart_service",
+      "return_type": "ValidationResult",
+      "parameters": [
+        { "name": "user_id", "type": "int" },
+        { "name": "cart_items", "type": "List[CartItem]" }
+      ],
+      "docstring": "验证购物车商品是否有效，检查库存和应用促销",
+      "visibility": "public"
+    },
+    "process_payment": {
+      "name": "process_payment",
+      "name_cn": "处理支付",
+      "module": "payment_service",
+      "return_type": "PaymentResult",
+      "parameters": [
+        { "name": "user_id", "type": "int" },
+        { "name": "amount", "type": "Decimal" },
+        { "name": "payment_method", "type": "PaymentMethod" }
+      ],
+      "docstring": "处理支付，调用支付网关并记录交易",
+      "visibility": "public"
+    },
+    "send_confirmation": {
+      "name": "send_confirmation",
+      "name_cn": "发送确认",
+      "module": "notification_service",
+      "return_type": "None",
+      "parameters": [
+        { "name": "user_id", "type": "int" },
+        { "name": "order_id", "type": "int" }
+      ],
+      "docstring": "异步发送订单确认邮件",
+      "visibility": "public"
+    },
+    "check_inventory": {
+      "name": "check_inventory",
+      "name_cn": "检查库存",
+      "module": "inventory_service",
+      "return_type": "bool",
+      "parameters": [
+        { "name": "product_id", "type": "int" },
+        { "name": "quantity", "type": "int" }
+      ],
+      "docstring": "检查商品库存是否充足",
+      "visibility": "public"
+    },
+    "apply_promotions": {
+      "name": "apply_promotions",
+      "name_cn": "应用促销",
+      "module": "promotion_service",
+      "return_type": "Decimal",
+      "parameters": [
+        { "name": "cart_items", "type": "List[CartItem]" },
+        { "name": "user_id", "type": "int" }
+      ],
+      "docstring": "应用可用的促销活动，返回折扣金额",
+      "visibility": "public"
+    },
+    "charge_card": {
+      "name": "charge_card",
+      "name_cn": "扣款",
+      "module": "payment_gateway",
+      "return_type": "GatewayResponse",
+      "parameters": [
+        { "name": "card_token", "type": "str" },
+        { "name": "amount", "type": "Decimal" }
+      ],
+      "docstring": "调用支付网关进行扣款",
+      "visibility": "private"
+    },
+    "record_transaction": {
+      "name": "record_transaction",
+      "name_cn": "记录交易",
+      "module": "transaction_log",
+      "return_type": "None",
+      "parameters": [
+        { "name": "user_id", "type": "int" },
+        { "name": "amount", "type": "Decimal" },
+        { "name": "status", "type": "str" }
+      ],
+      "docstring": "记录交易日志",
+      "visibility": "public"
+    }
+  }
+}
