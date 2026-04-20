@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-步骤/向导扫描器
-用于识别 TSX 文件中的 Ant Design Steps 组件和向导模式
+增强版步骤/向导扫描器
+支持数组定义步骤、Steps组件、步骤切换函数等各种模式
 """
 
 import re
@@ -16,7 +16,16 @@ from ..models.data_models import (
 
 
 class StepScanner:
-    """步骤/向导扫描器"""
+    """增强版步骤/向导扫描器"""
+
+    STEP_KEYWORDS = [
+        '步骤', '选择', '配置', '测试', '基本', '信息', '存储', '网络',
+        '登录', '高级', '计算', '连接', '凭据', '设置', '下一步',
+        '上一步', '步骤0', '步骤1', 'step', 'Step', 'STEP',
+        '向导', 'wizard', 'Wizard', 'WIZARD',
+        '确认', 'review', 'Review', 'REVIEW',
+        '完成', 'finish', 'Finish', 'FINISH',
+    ]
 
     def __init__(self):
         self.step_counter = 0
@@ -25,196 +34,268 @@ class StepScanner:
         """扫描单个文件中的步骤/向导"""
         steps = []
 
-        steps_definitions = self._find_steps_definitions(content)
-
-        for idx, step_def in enumerate(steps_definitions):
-            step_info = self._extract_step_info(file_path, content, step_def, idx)
-            if step_info:
-                steps.append(step_info)
-                self.step_counter += 1
-
-        wizard_components = self._find_wizard_components(content)
-        for wizard in wizard_components:
-            wizard_steps = self._extract_wizard_steps(file_path, content, wizard)
-            for step in wizard_steps:
-                exists = any(s.step_index == step.step_index and s.wizard_name == step.wizard_name for s in steps)
-                if not exists:
-                    steps.append(step)
+        array_steps = self._find_array_step_definitions(content)
+        for wizard_name, step_defs in array_steps.items():
+            for idx, step_def in enumerate(step_defs):
+                step_info = self._create_step_info(
+                    file_path, content, wizard_name, idx, step_def['title'], step_def['start_line']
+                )
+                if step_info:
+                    steps.append(step_info)
                     self.step_counter += 1
+
+        steps_component = self._find_steps_component(content)
+        for wizard_name, step_defs in steps_component.items():
+            for idx, step_def in enumerate(step_defs):
+                exists = any(
+                    s.step_index == idx and s.wizard_name == wizard_name for s in steps
+                )
+                if not exists:
+                    step_info = self._create_step_info(
+                        file_path, content, wizard_name, idx, step_def['title'], step_def['start_line']
+                    )
+                    if step_info:
+                        steps.append(step_info)
+                        self.step_counter += 1
+
+        wizard_patterns = self._find_wizard_patterns(content)
+        for wizard_name, wizard_info in wizard_patterns.items():
+            step_count = wizard_info.get('step_count', 0)
+            for idx in range(step_count):
+                exists = any(
+                    s.step_index == idx and s.wizard_name == wizard_name for s in steps
+                )
+                if not exists:
+                    step_info = self._create_step_info(
+                        file_path, content, wizard_name, idx, 
+                        f"步骤 {idx + 1}", wizard_info['start_line']
+                    )
+                    if step_info:
+                        steps.append(step_info)
+                        self.step_counter += 1
 
         return steps
 
-    def _find_steps_definitions(self, content: str) -> List[Dict[str, Any]]:
-        """查找步骤数组定义"""
-        definitions = []
+    def _find_array_step_definitions(self, content: str) -> Dict[str, List[Dict[str, Any]]]:
+        """查找数组形式的步骤定义"""
+        wizard_steps = {}
 
-        pattern = re.compile(r'const\s+(\w+)\s*=\s*\[([^\]]+)\]')
-        for match in pattern.finditer(content):
-            var_name = match.group(1)
-            array_content = match.group(2)
+        patterns = [
+            r'(?:const|let|var)\s+(\w*[Ss]tep\w*|\w*[Ss]tep\w*|steps|Steps|STEPS)\s*=\s*\[',
+            r'(?:const|let|var)\s+(\w*[Ww]izard\w*|\w*[Ww]izard\w*)\s*=\s*\[',
+        ]
 
-            if re.search(r'["\'].*步骤.*["\']', array_content) or \
-               re.search(r'["\'].*下一步.*["\']', array_content) or \
-               re.search(r'["\'].*选择.*["\']', array_content) or \
-               re.search(r'["\'].*配置.*["\']', array_content) or \
-               re.search(r'["\'].*测试.*["\']', array_content) or \
-               re.search(r'["\'].*基本.*["\']', array_content) or \
-               re.search(r'["\'].*信息.*["\']', array_content) or \
-               re.search(r'["\'].*存储.*["\']', array_content) or \
-               re.search(r'["\'].*网络.*["\']', array_content) or \
-               re.search(r'["\'].*登录.*["\']', array_content) or \
-               re.search(r'["\'].*高级.*["\']', array_content):
+        for pattern in patterns:
+            for match in re.finditer(pattern, content):
+                var_name = match.group(1)
+                start_pos = match.start()
+                start_line = content[:start_pos].count('\n') + 1
 
-                step_titles = self._parse_step_titles(array_content)
-                if step_titles:
-                    definitions.append({
-                        'var_name': var_name,
-                        'step_titles': step_titles,
-                        'start_pos': match.start(),
-                        'start_line': content[:match.start()].count('\n') + 1
-                    })
+                close_pos = self._find_matching_bracket(content, match.end(), '[', ']')
 
-        return definitions
+                if close_pos > match.end():
+                    array_content = content[match.end():close_pos]
+                    step_defs = self._parse_array_steps(array_content, start_line)
 
-    def _parse_step_titles(self, array_content: str) -> List[str]:
-        """解析步骤标题"""
-        titles = []
+                    if step_defs:
+                        if var_name not in wizard_steps:
+                            wizard_steps[var_name] = []
+                        for idx, step_title in enumerate(step_defs):
+                            wizard_steps[var_name].append({
+                                'title': step_title,
+                                'start_line': start_line
+                            })
 
-        pattern = re.compile(r'["\']([^"\']+步骤[^"\']*)["\']')
-        for match in pattern.finditer(array_content):
-            titles.append(match.group(1))
+        return wizard_steps
 
-        if not titles:
-            pattern2 = re.compile(r'["\']([^"\']+)["\']')
-            for match in pattern2.finditer(array_content):
-                title = match.group(1)
-                if len(title) <= 15 and len(title) >= 2:
-                    if any(keyword in title for keyword in ['选择', '配置', '测试', '基本', '信息', '存储', '网络', '登录', '高级', '计算', '连接', '凭据', '设置']):
-                        titles.append(title)
+    def _find_matching_bracket(self, content: str, start_pos: int, 
+                                  open_char: str, close_char: str) -> int:
+        """查找匹配的括号"""
+        depth = 1
+        pos = start_pos
 
-        return titles
+        while pos < len(content):
+            ch = content[pos]
 
-    def _extract_step_info(self, file_path: str, content: str, step_def: Dict[str, Any], idx: int) -> Optional[StepInfo]:
-        """提取步骤信息"""
-        var_name = step_def['var_name']
-        step_titles = step_def['step_titles']
+            if ch == open_char:
+                depth += 1
+            elif ch == close_char:
+                depth -= 1
+                if depth == 0:
+                    return pos + 1
 
-        if not step_titles:
-            return None
+            pos += 1
 
+        return len(content)
+
+    def _parse_array_steps(self, array_content: str, start_line: int) -> List[str]:
+        """解析数组中的步骤标题"""
         steps = []
-        for step_idx, title in enumerate(step_titles):
-            step_id = self._generate_id(file_path, var_name, step_idx)
 
-            step = StepInfo(
-                id=step_id,
-                wizard_name=var_name,
-                step_index=step_idx,
-                title=title,
-                file_path=file_path,
-                location=Location(
-                    start_line=step_def['start_line'],
-                    end_line=step_def['start_line']
-                ),
-                next_step=step_idx + 1 if step_idx < len(step_titles) - 1 else None,
-                prev_step=step_idx - 1 if step_idx > 0 else None,
-                buttons_in_step=self._find_buttons_for_step(content, step_idx),
-                form_fields_in_step=[],
-                description=f"步骤 {step_idx + 1}: {title}",
-                metadata={}
+        string_pattern = re.compile(r'["\']([^"\']*步骤[^"\']*)["\']')
+        for match in string_pattern.finditer(array_content):
+            title = match.group(1)
+            if title and title not in steps:
+                steps.append(title)
+
+        if not steps:
+            object_pattern = re.compile(
+                r'\{\s*title\s*:\s*["\']([^"\']+)["\']',
+                re.MULTILINE
             )
+            for match in object_pattern.finditer(array_content):
+                title = match.group(1)
+                if title and title not in steps:
+                    steps.append(title)
 
-            steps.append(step)
+        if not steps:
+            simple_string_pattern = re.compile(r'["\']([^"\']{2,20})["\']')
+            for match in simple_string_pattern.finditer(array_content):
+                title = match.group(1)
 
-        return steps[0] if steps else None
+                is_step_title = False
+                if len(title) >= 2 and len(title) <= 20:
+                    for keyword in self.STEP_KEYWORDS:
+                        if keyword in title:
+                            is_step_title = True
+                            break
 
-    def _find_wizard_components(self, content: str) -> List[Dict[str, Any]]:
-        """查找向导组件"""
-        wizards = []
+                    if re.search(r'[步骤一二三四五六七八九十1234567890]+', title):
+                        is_step_title = True
 
-        pattern = re.compile(r'<Steps[^>]*>', re.MULTILINE)
-        for match in pattern.finditer(content):
+                if is_step_title and title not in steps:
+                    steps.append(title)
+
+        return steps
+
+    def _find_steps_component(self, content: str) -> Dict[str, List[Dict[str, Any]]]:
+        """查找 Ant Design Steps 组件"""
+        wizard_steps = {}
+
+        steps_tag_pattern = re.compile(r'<Steps[^>]*>', re.DOTALL)
+        for match in steps_tag_pattern.finditer(content):
             start_pos = match.start()
-            full_tag = match.group(0)
             start_line = content[:start_pos].count('\n') + 1
 
-            wizard = {
-                'start_pos': start_pos,
-                'full_tag': full_tag,
-                'start_line': start_line,
-                'step_titles': []
-            }
+            step_title_pattern = re.compile(r'<Step[^>]*title\s*=\s*["\']([^"\']+)["\']')
+            step_titles = []
+            for step_match in step_title_pattern.finditer(content, start_pos, start_pos + 3000):
+                step_titles.append({
+                    'title': step_match.group(1),
+                    'start_line': start_line
+                })
 
-            current_match = re.search(r'current\s*=\s*\{([^}]+)\}', full_tag)
-            if current_match:
-                wizard['current_var'] = current_match.group(1)
+            if step_titles:
+                wizard_name = f"StepsComponent_{self.step_counter}"
+                wizard_steps[wizard_name] = step_titles
 
-            wizards.append(wizard)
+        return wizard_steps
+
+    def _find_wizard_patterns(self, content: str) -> Dict[str, Dict[str, Any]]:
+        """查找向导模式（通过 step 变量和切换函数）"""
+        wizards = {}
+
+        step_state_patterns = [
+            r'(?:const|let|var)\s*\[?\s*(\w*[Ss]tep\w*|\w*[Ss]tep\w*|currentStep|currentStepIndex|step|Step)\s*,\s*\w+\s*\]?\s*=\s*useState',
+        ]
+
+        for pattern in step_state_patterns:
+            for match in re.finditer(pattern, content):
+                var_name = match.group(1)
+                start_pos = match.start()
+                start_line = content[:start_pos].count('\n') + 1
+
+                has_next = bool(re.search(r'handleNext|nextStep|next\s*=\s*\(', content[max(0, start_pos - 500):start_pos + 2000]))
+                has_prev = bool(re.search(r'handlePrev|prevStep|previous\s*=\s*\(', content[max(0, start_pos - 500):start_pos + 2000]))
+
+                if has_next or has_prev:
+                    wizard_name = f"Wizard_{var_name}"
+
+                    step_count = 3
+
+                    step_count_match = re.search(r'const\s+steps\s*=\s*\[([^\]]+)\]', content)
+                    if step_count_match:
+                        step_text = step_count_match.group(1)
+                        step_count = step_text.count(',') + 1
+
+                    wizards[wizard_name] = {
+                        'start_line': start_line,
+                        'step_count': step_count,
+                        'step_var': var_name,
+                        'has_next': has_next,
+                        'has_prev': has_prev
+                    }
 
         return wizards
 
-    def _extract_wizard_steps(self, file_path: str, content: str, wizard: Dict[str, Any]) -> List[StepInfo]:
-        """从向导组件提取步骤"""
-        steps = []
+    def _create_step_info(self, file_path: str, content: str, 
+                           wizard_name: str, step_index: int, 
+                           title: str, start_line: int) -> Optional[StepInfo]:
+        """创建步骤信息"""
+        step_id = self._generate_id(file_path, wizard_name, step_index)
 
-        step_titles = []
-        start_pos = wizard['start_pos']
+        buttons_in_step = self._find_buttons_for_step(content, step_index, start_line)
+        form_fields_in_step = self._find_form_fields_for_step(content, step_index, start_line)
 
-        step_pattern = re.compile(r'<Step[^>]*title\s*=\s*\{?\s*["\']([^"\']+)["\']')
-        for match in step_pattern.finditer(content, start_pos, start_pos + 3000):
-            step_titles.append(match.group(1))
+        step = StepInfo(
+            id=step_id,
+            wizard_name=wizard_name,
+            step_index=step_index,
+            title=title,
+            file_path=file_path,
+            location=Location(
+                start_line=start_line,
+                end_line=start_line
+            ),
+            next_step=step_index + 1,
+            prev_step=step_index - 1 if step_index > 0 else None,
+            buttons_in_step=buttons_in_step,
+            form_fields_in_step=form_fields_in_step,
+            description=f"步骤 {step_index + 1}: {title}",
+            metadata={}
+        )
 
-        if not step_titles:
-            step_pattern2 = re.compile(r'title\s*=\s*["\']([^"\']+步骤[^"\']*)["\']')
-            for match in step_pattern2.finditer(content, start_pos, start_pos + 3000):
-                step_titles.append(match.group(1))
+        return step
 
-        for step_idx, title in enumerate(step_titles):
-            step_id = self._generate_id(file_path, 'StepsComponent', step_idx)
-
-            step = StepInfo(
-                id=step_id,
-                wizard_name='StepsComponent',
-                step_index=step_idx,
-                title=title,
-                file_path=file_path,
-                location=Location(
-                    start_line=wizard['start_line'],
-                    end_line=wizard['start_line']
-                ),
-                next_step=step_idx + 1 if step_idx < len(step_titles) - 1 else None,
-                prev_step=step_idx - 1 if step_idx > 0 else None,
-                buttons_in_step=self._find_buttons_for_step(content, step_idx),
-                form_fields_in_step=[],
-                description=f"步骤 {step_idx + 1}: {title}",
-                metadata={}
-            )
-
-            steps.append(step)
-
-        return steps
-
-    def _find_buttons_for_step(self, content: str, step_idx: int) -> List[str]:
+    def _find_buttons_for_step(self, content: str, step_index: int, start_line: int) -> List[str]:
         """查找步骤相关的按钮处理函数"""
         buttons = []
 
-        if step_idx == 0:
-            pattern = re.compile(r'(handle[A-Z][a-zA-Z]*Select)')
-            for match in pattern.finditer(content):
+        if step_index == 0:
+            provider_pattern = re.compile(r'(handle[A-Z][a-zA-Z]*Select)', re.MULTILINE)
+            for match in provider_pattern.finditer(content):
                 func_name = match.group(1)
                 if func_name not in buttons:
                     buttons.append(func_name)
         else:
-            if 'handleNext' in content:
+            next_pattern = re.compile(r'(handleNext|nextStep|next\s*=\s*\([^)]*\)\s*=>)', re.MULTILINE)
+            for match in next_pattern.finditer(content):
                 buttons.append('handleNext')
-            if 'handlePrev' in content:
+                break
+
+            prev_pattern = re.compile(r'(handlePrev|prevStep|previous\s*=\s*\([^)]*\)\s*=>)', re.MULTILINE)
+            for match in prev_pattern.finditer(content):
                 buttons.append('handlePrev')
-            if 'next' in content:
-                buttons.append('next')
-            if 'prev' in content:
-                buttons.append('prev')
+                break
+
+        submit_pattern = re.compile(r'(handleSubmit|handleFinish|handleOk)', re.MULTILINE)
+        for match in submit_pattern.finditer(content):
+            buttons.append(match.group(1))
+            break
 
         return buttons
+
+    def _find_form_fields_for_step(self, content: str, step_index: int, start_line: int) -> List[str]:
+        """查找步骤相关的表单字段"""
+        fields = []
+
+        form_item_pattern = re.compile(r'<Form\.Item[^>]*name\s*=\s*["\'](\w+)["\']')
+        for match in form_item_pattern.finditer(content):
+            field_name = match.group(1)
+            if field_name not in fields:
+                fields.append(field_name)
+
+        return fields
 
     def _generate_id(self, file_path: str, wizard_name: str, step_index: int) -> str:
         """生成唯一ID"""
