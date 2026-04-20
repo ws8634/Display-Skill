@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        #cy { width: 600px; height: 400px; border: 1px solid #ccc; }
+        #log { margin-top: 20px; padding: 10px; background: #f5f5f5; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Cytoscape 测试</h1>
+    <div id="cy"></div>
+    <div id="log"></div>
+    
+    <script>
+        function log(msg) {
+            document.getElementById('log').innerHTML += '<p>' + msg + '</p>';
+            console.log(msg);
+        }
+        
+        const sampleData = {
+            nodes: [
+                { id: 'a', name: 'Node A', type: 'Function' },
+                { id: 'b', name: 'Node B', type: 'API', method: 'GET', path: '/api/test' },
+                { id: 'c', name: 'Node C', type: 'Component' }
+            ],
+            edges: [
+                { id: 'e1', source: 'a', target: 'b', call_type: 'api_call' },
+                { id: 'e2', source: 'a', target: 'c', call_type: 'direct' }
+            ]
+        };
+        
+        function init() {
+            try {
+                log('开始初始化...');
+                
+                const elements = [];
+                
+                sampleData.nodes.forEach(node => {
+                    const isRoot = node.id === 'a';
+                    let color = '#9ca3af';
+                    let shape = 'ellipse';
+                    
+                    if (isRoot) {
+                        color = '#667eea';
+                    } else if (node.type === 'Component') {
+                        color = '#11998e';
+                    } else if (node.type === 'API') {
+                        color = '#f5576c';
+                        shape = 'diamond';
+                    }
+                    
+                    elements.push({
+                        group: 'nodes',
+                        data: {
+                            id: node.id,
+                            name: node.name,
+                            type: node.type,
+                            isRoot: isRoot
+                        }
+                    });
+                });
+                
+                sampleData.edges.forEach(edge => {
+                    elements.push({
+                        group: 'edges',
+                        data: {
+                            id: edge.id,
+                            source: edge.source,
+                            target: edge.target,
+                            call_type: edge.call_type
+                        }
+                    });
+                });
+                
+                log('元素数量: ' + elements.length);
+                log('准备创建 cytoscape 实例...');
+                
+                const cy = cytoscape({
+                    container: document.getElementById('cy'),
+                    elements: elements,
+                    style: [
+                        {
+                            selector: 'node',
+                            style: {
+                                'background-color': '#9ca3af',
+                                'label': 'data(name)',
+                                'font-size': '12px',
+                                'width': '40px',
+                                'height': '40px'
+                            }
+                        },
+                        {
+                            selector: 'node[type="API"]',
+                            style: {
+                                'background-color': '#f5576c',
+                                'shape': 'diamond'
+                            }
+                        },
+                        {
+                            selector: 'node[type="Component"]',
+                            style: {
+                                'background-color': '#11998e'
+                            }
+                        },
+                        {
+                            selector: 'node[isRoot="true"]',
+                            style: {
+                                'background-color': '#667eea',
+                                'width': '50px',
+                                'height': '50px'
+                            }
+                        },
+                        {
+                            selector: 'edge',
+                            style: {
+                                'width': 2,
+                                'line-color': '#9ca3af',
+                                'target-arrow-color': '#9ca3af',
+                                'target-arrow-shape': 'triangle',
+                                'curve-style': 'bezier'
+                            }
+                        }
+                    ],
+                    layout: {
+                        name: 'breadthfirst',
+                        directed: true,
+                        padding: 30
+                    }
+                });
+                
+                log('初始化成功!');
+                
+                cy.on('tap', 'node', function(evt) {
+                    const node = evt.target;
+                    log('点击节点: ' + node.data('name') + ' (' + node.data('type') + ')');
+                });
+                
+            } catch (error) {
+                log('错误: ' + error.message);
+                log('堆栈: ' + error.stack);
+                console.error(error);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            log('DOM 加载完成');
+            init();
+        });
+    </script>
+</body>
+</html>
