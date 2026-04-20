@@ -1,0 +1,1108 @@
+{
+  "skill_version": "1.0",
+  "scan_type": "frontend_interaction",
+  "summary": {
+    "total_files_scanned": 50,
+    "total_buttons": 20,
+    "total_forms": 1,
+    "total_steps": 0,
+    "total_api_calls": 21,
+    "total_operation_chains": 6
+  },
+  "buttons": [
+    {
+      "id": "f9a2eec831a5",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/ResourceActionsDropdown.tsx",
+      "location": {
+        "start_line": 39,
+        "end_line": 41,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "unknown",
+      "metadata": {
+        "full_match": "<Button\n          type={buttonType}\n          icon={icon ?? <EllipsisOutlined />"
+      }
+    },
+    {
+      "id": "18dc36b8ba41",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailContainer.tsx",
+      "location": {
+        "start_line": 157,
+        "end_line": 157,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "form",
+      "metadata": {
+        "full_match": "<Button icon={<ArrowLeftOutlined />"
+      }
+    },
+    {
+      "id": "3e0ff06cd05d",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailContainer.tsx",
+      "location": {
+        "start_line": 160,
+        "end_line": 160,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "card",
+      "metadata": {
+        "full_match": "<Button icon={<ArrowLeftOutlined />"
+      }
+    },
+    {
+      "id": "3619b17f5319",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailContainer.tsx",
+      "location": {
+        "start_line": 167,
+        "end_line": 167,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "card",
+      "metadata": {
+        "full_match": "<Button icon={moreIcon || <CodeOutlined />"
+      }
+    },
+    {
+      "id": "b8c60cab7f14",
+      "name": "act.onClick",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "act.onClick",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailContainer.tsx",
+      "location": {
+        "start_line": 173,
+        "end_line": 179,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "card",
+      "metadata": {
+        "full_match": "<Button\n                  key={act.key}\n                  icon={act.icon}\n                  onClick={act.onClick}\n                  loading={!!act.loading}\n                  disabled={!!act.disabled}\n"
+      }
+    },
+    {
+      "id": "70eb8a42539f",
+      "name": "{act.text}",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "act.onClick",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailSection.tsx",
+      "location": {
+        "start_line": 280,
+        "end_line": 288,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "{act.text}",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "table",
+      "metadata": {
+        "full_match": "<Button\n              key={act.key}\n              icon={act.icon}\n              onClick={act.onClick}\n              loading={!!act.loading}\n              disabled={!!act.disabled}\n            >\n      "
+      }
+    },
+    {
+      "id": "c3cd0cbdcb52",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailSection.tsx",
+      "location": {
+        "start_line": 310,
+        "end_line": 310,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "unknown",
+      "metadata": {
+        "full_match": "<Button icon={moreIcon || <EllipsisOutlined />"
+      }
+    },
+    {
+      "id": "67b4291adf87",
+      "name": "button_unknown",
+      "type": "link",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailSection.tsx",
+      "location": {
+        "start_line": 409,
+        "end_line": 409,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "card",
+      "metadata": {
+        "full_match": "<Button type=\"link\" icon={<EllipsisOutlined />"
+      }
+    },
+    {
+      "id": "0fe4118f2275",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/TableColumnSettingsButton.tsx",
+      "location": {
+        "start_line": 90,
+        "end_line": 90,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "table",
+      "metadata": {
+        "full_match": "<Button icon={<SettingOutlined />"
+      }
+    },
+    {
+      "id": "6656df195cb0",
+      "name": "刷新页面",
+      "type": "primary",
+      "action_type": "unknown",
+      "onClick": "this.handleReload",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/ErrorBoundary.tsx",
+      "location": {
+        "start_line": 107,
+        "end_line": 109,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "刷新页面",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "unknown",
+      "metadata": {
+        "full_match": "<Button type=\"primary\" key=\"reload\" onClick={this.handleReload}>\n              刷新页面\n            </Button>"
+      }
+    },
+    {
+      "id": "e39f6a75e28d",
+      "name": "重试",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "this.handleReset",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/ErrorBoundary.tsx",
+      "location": {
+        "start_line": 110,
+        "end_line": 112,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "重试",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "unknown",
+      "metadata": {
+        "full_match": "<Button key=\"reset\" onClick={this.handleReset}>\n              重试\n            </Button>"
+      }
+    },
+    {
+      "id": "5164d9b0e7ee",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/TableColumnSettings.tsx",
+      "location": {
+        "start_line": 172,
+        "end_line": 172,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "table",
+      "metadata": {
+        "full_match": "<Button icon={<SettingOutlined />"
+      }
+    },
+    {
+      "id": "7a4ed70edcbb",
+      "name": "{primaryAction.label}",
+      "type": "primary",
+      "action_type": "unknown",
+      "onClick": "primaryAction.onClick",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/SharedToolbar.tsx",
+      "location": {
+        "start_line": 96,
+        "end_line": 104,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "{primaryAction.label}",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "modal",
+      "metadata": {
+        "full_match": "<Button \n          type=\"primary\" \n          onClick={primaryAction.onClick}\n          loading={primaryAction.loading}\n          disabled={primaryAction.disabled}\n          danger={primaryAction.dange"
+      }
+    },
+    {
+      "id": "e0f015f33541",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/SharedToolbar.tsx",
+      "location": {
+        "start_line": 120,
+        "end_line": 120,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "modal",
+      "metadata": {
+        "full_match": "<Button icon={<EllipsisOutlined />"
+      }
+    },
+    {
+      "id": "d89c155878ff",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/SharedToolbar.tsx",
+      "location": {
+        "start_line": 129,
+        "end_line": 130,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "modal",
+      "metadata": {
+        "full_match": "<Button \n          icon={<SettingOutlined />"
+      }
+    },
+    {
+      "id": "3fcc39b06db0",
+      "name": "button_unknown",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/SharedToolbar.tsx",
+      "location": {
+        "start_line": 140,
+        "end_line": 141,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "modal",
+      "metadata": {
+        "full_match": "<Button \n          icon={<ReloadOutlined />"
+      }
+    },
+    {
+      "id": "30586d5e5f1b",
+      "name": "{cancelText}",
+      "type": "default",
+      "action_type": "cancel",
+      "onClick": "onClose",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/StdSideDrawer.tsx",
+      "location": {
+        "start_line": 40,
+        "end_line": 40,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "{cancelText}",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "modal",
+      "metadata": {
+        "full_match": "<Button onClick={onClose}>{cancelText}</Button>"
+      }
+    },
+    {
+      "id": "bce67f40398b",
+      "name": "{okText}",
+      "type": "primary",
+      "action_type": "unknown",
+      "onClick": "onOk",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/StdSideDrawer.tsx",
+      "location": {
+        "start_line": 41,
+        "end_line": 41,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "{okText}",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "modal",
+      "metadata": {
+        "full_match": "<Button type=\"primary\" onClick={onOk} loading={confirmLoading}>{okText}</Button>"
+      }
+    },
+    {
+      "id": "f6afeaf67791",
+      "name": "setOpen(true)}>选择",
+      "type": "default",
+      "action_type": "unknown",
+      "onClick": "() => setOpen(true)",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/OSSFilePicker.tsx",
+      "location": {
+        "start_line": 51,
+        "end_line": 51,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "setOpen(true)}>选择",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "modal",
+      "metadata": {
+        "full_match": "<Button onClick={() => setOpen(true)}>选择</Button>"
+      }
+    },
+    {
+      "id": "3d0ec4568583",
+      "name": "button_unknown",
+      "type": "text",
+      "action_type": "unknown",
+      "onClick": "",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PolicyTransfer.tsx",
+      "location": {
+        "start_line": 112,
+        "end_line": 112,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "text_content": "",
+      "icon": null,
+      "disabled": false,
+      "danger": false,
+      "container_type": "unknown",
+      "metadata": {
+        "full_match": "<Button type=\"text\" danger icon={<DeleteOutlined />"
+      }
+    }
+  ],
+  "forms": [
+    {
+      "id": "886515d5d169",
+      "name": "StdFormModal_form",
+      "form_instance": "form",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/StdFormModal.tsx",
+      "location": {
+        "start_line": 44,
+        "end_line": 51,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "fields": [],
+      "validation_methods": [],
+      "submit_methods": [],
+      "layout": "vertical",
+      "metadata": {}
+    }
+  ],
+  "steps": [],
+  "api_calls": [
+    {
+      "id": "9fbc505d0adf",
+      "method": "GET",
+      "path": "/api/getSystemSetting",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/App.tsx",
+      "location": {
+        "start_line": 229,
+        "end_line": 229,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getSystemSetting"
+      }
+    },
+    {
+      "id": "6168e6fef6df",
+      "method": "GET",
+      "path": "/api/getDefaultAdminPath",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/App.tsx",
+      "location": {
+        "start_line": 251,
+        "end_line": 251,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getDefaultAdminPath"
+      }
+    },
+    {
+      "id": "987553b671a5",
+      "method": "POST",
+      "path": "/api/createRoot",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/index.tsx",
+      "location": {
+        "start_line": 8,
+        "end_line": 8,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "createRoot"
+      }
+    },
+    {
+      "id": "20885995a6c7",
+      "method": "GET",
+      "path": "/api/getRequiredActionForPath",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/AdminRoute.tsx",
+      "location": {
+        "start_line": 27,
+        "end_line": 27,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getRequiredActionForPath"
+      }
+    },
+    {
+      "id": "03bbabbe4326",
+      "method": "GET",
+      "path": "/api/getDerivedStateFromError",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/ErrorBoundary.tsx",
+      "location": {
+        "start_line": 34,
+        "end_line": 34,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getDerivedStateFromError"
+      }
+    },
+    {
+      "id": "d64a2af24040",
+      "method": "GET",
+      "path": "/api/getColumnKey",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/TableColumnSettings.tsx",
+      "location": {
+        "start_line": 42,
+        "end_line": 42,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getColumnKey"
+      }
+    },
+    {
+      "id": "632f5fdaf6be",
+      "method": "GET",
+      "path": "/api/getItem",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/TableColumnSettings.tsx",
+      "location": {
+        "start_line": 68,
+        "end_line": 68,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getItem"
+      }
+    },
+    {
+      "id": "44847952e0f7",
+      "method": "GET",
+      "path": "/api/getColumnKey",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/TableColumnSettings.tsx",
+      "location": {
+        "start_line": 97,
+        "end_line": 97,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getColumnKey"
+      }
+    },
+    {
+      "id": "263614dd278c",
+      "method": "POST",
+      "path": "/api/upload/model",
+      "call_type": "fetch",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/OSSFilePicker.tsx",
+      "location": {
+        "start_line": 33,
+        "end_line": 33,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "customUpload",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {}
+    },
+    {
+      "id": "2260f6b4bdc5",
+      "method": "POST",
+      "path": "/api/createServer",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 76,
+        "end_line": 76,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "createServer"
+      }
+    },
+    {
+      "id": "7057efd7927a",
+      "method": "POST",
+      "path": "/api/createSshWsServer",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 384,
+        "end_line": 384,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "createSshWsServer"
+      }
+    },
+    {
+      "id": "aca09cbf31cc",
+      "method": "POST",
+      "path": "/api/createVncWsServer",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 392,
+        "end_line": 392,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "createVncWsServer"
+      }
+    },
+    {
+      "id": "50c9b6274782",
+      "method": "POST",
+      "path": "/api/createKvVncWss",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 400,
+        "end_line": 400,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "createKvVncWss"
+      }
+    },
+    {
+      "id": "d62c64685229",
+      "method": "POST",
+      "path": "/api/createKvPodLogWss",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 410,
+        "end_line": 410,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "createKvPodLogWss"
+      }
+    },
+    {
+      "id": "a6580c691d9b",
+      "method": "GET",
+      "path": "/api/getHeader",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 95,
+        "end_line": 95,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getHeader"
+      }
+    },
+    {
+      "id": "b2f70958893d",
+      "method": "GET",
+      "path": "/api/getPublicUiSettings",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 220,
+        "end_line": 220,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getPublicUiSettings"
+      }
+    },
+    {
+      "id": "51aff5fc98cf",
+      "method": "GET",
+      "path": "/api/getPublicAdminPasswordPolicy",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 224,
+        "end_line": 224,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getPublicAdminPasswordPolicy"
+      }
+    },
+    {
+      "id": "73e3534d6d97",
+      "method": "GET",
+      "path": "/api/getInstance",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 337,
+        "end_line": 337,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getInstance"
+      }
+    },
+    {
+      "id": "886b0564142a",
+      "method": "GET",
+      "path": "/api/getInstance",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 347,
+        "end_line": 347,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getInstance"
+      }
+    },
+    {
+      "id": "425db7c7e382",
+      "method": "GET",
+      "path": "/api/getInstance",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 360,
+        "end_line": 360,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getInstance"
+      }
+    },
+    {
+      "id": "dd4416cb654b",
+      "method": "GET",
+      "path": "/api/getInstance",
+      "call_type": "function_call",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+      "location": {
+        "start_line": 370,
+        "end_line": 370,
+        "start_column": 0,
+        "end_column": 0
+      },
+      "called_from": "sendHarvesterImageUploaderTool",
+      "payload_construction": {},
+      "response_handling": "",
+      "metadata": {
+        "function_name": "getInstance"
+      }
+    }
+  ],
+  "operation_chains": [
+    {
+      "id": "dd8ac6e6d4fd",
+      "name": "ResourceActionsDropdown操作流程",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/ResourceActionsDropdown.tsx",
+      "steps": [
+        {
+          "step_order": 1,
+          "type": "button_click",
+          "description": "点击按钮：button_unknown",
+          "metadata": {},
+          "button": {
+            "id": "f9a2eec831a5",
+            "name": "button_unknown",
+            "action": ""
+          }
+        }
+      ],
+      "page_name": "ResourceActionsDropdown",
+      "component_name": "ResourceActionsDropdown",
+      "metadata": {
+        "total_steps": 1,
+        "button_clicks": 1,
+        "form_fills": 0,
+        "api_calls": 0,
+        "type": "page"
+      }
+    },
+    {
+      "id": "1f12c214c2ea",
+      "name": "PageDetailSection操作流程",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailSection.tsx",
+      "steps": [
+        {
+          "step_order": 1,
+          "type": "button_click",
+          "description": "点击按钮：button_unknown",
+          "metadata": {},
+          "button": {
+            "id": "c3cd0cbdcb52",
+            "name": "button_unknown",
+            "action": ""
+          }
+        }
+      ],
+      "page_name": "PageDetailSection",
+      "component_name": "PageDetailSection",
+      "metadata": {
+        "total_steps": 1,
+        "button_clicks": 1,
+        "form_fills": 0,
+        "api_calls": 0,
+        "type": "page"
+      }
+    },
+    {
+      "id": "7a288eb8906e",
+      "name": "ErrorBoundary操作流程",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/ErrorBoundary.tsx",
+      "steps": [
+        {
+          "step_order": 1,
+          "type": "button_click",
+          "description": "点击按钮：刷新页面",
+          "metadata": {},
+          "button": {
+            "id": "6656df195cb0",
+            "name": "刷新页面",
+            "action": "this.handleReload"
+          }
+        },
+        {
+          "step_order": 2,
+          "type": "button_click",
+          "description": "点击按钮：重试",
+          "metadata": {},
+          "button": {
+            "id": "e39f6a75e28d",
+            "name": "重试",
+            "action": "this.handleReset"
+          }
+        }
+      ],
+      "page_name": "ErrorBoundary",
+      "component_name": "ErrorBoundary",
+      "metadata": {
+        "total_steps": 2,
+        "button_clicks": 2,
+        "form_fills": 0,
+        "api_calls": 0,
+        "type": "page"
+      }
+    },
+    {
+      "id": "cd42e7991623",
+      "name": "StdSideDrawer操作流程",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/StdSideDrawer.tsx",
+      "steps": [
+        {
+          "step_order": 1,
+          "type": "button_click",
+          "description": "点击按钮：{cancelText}，取消操作",
+          "metadata": {},
+          "button": {
+            "id": "30586d5e5f1b",
+            "name": "{cancelText}",
+            "action": "onClose"
+          }
+        },
+        {
+          "step_order": 2,
+          "type": "modal_close",
+          "description": "模态框关闭",
+          "metadata": {}
+        }
+      ],
+      "page_name": "StdSideDrawer",
+      "component_name": "StdSideDrawer",
+      "metadata": {
+        "total_steps": 2,
+        "button_clicks": 1,
+        "form_fills": 0,
+        "api_calls": 0,
+        "type": "modal",
+        "form_count": 0
+      }
+    },
+    {
+      "id": "c71b1113787d",
+      "name": "OSSFilePicker操作流程",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/OSSFilePicker.tsx",
+      "steps": [
+        {
+          "step_order": 1,
+          "type": "api_call",
+          "description": "调用 API：POST /api/upload/model",
+          "metadata": {},
+          "api_call": {
+            "id": "263614dd278c",
+            "method": "POST",
+            "path": "/api/upload/model"
+          }
+        }
+      ],
+      "page_name": "OSSFilePicker",
+      "component_name": "OSSFilePicker",
+      "metadata": {
+        "total_steps": 1,
+        "button_clicks": 0,
+        "form_fills": 0,
+        "api_calls": 1,
+        "type": "modal",
+        "form_count": 0
+      }
+    },
+    {
+      "id": "7d3e90496a92",
+      "name": "PolicyTransfer操作流程",
+      "file_path": "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PolicyTransfer.tsx",
+      "steps": [
+        {
+          "step_order": 1,
+          "type": "button_click",
+          "description": "点击按钮：button_unknown",
+          "metadata": {},
+          "button": {
+            "id": "3d0ec4568583",
+            "name": "button_unknown",
+            "action": ""
+          }
+        }
+      ],
+      "page_name": "PolicyTransfer",
+      "component_name": "PolicyTransfer",
+      "metadata": {
+        "total_steps": 1,
+        "button_clicks": 1,
+        "form_fills": 0,
+        "api_calls": 0,
+        "type": "page"
+      }
+    }
+  ],
+  "files_scanned": [
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/App.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/index.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/utils/markdown.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/ResourceActionsDropdown.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/ResourceDetailContainer.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailContainer.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PageDetailSection.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/Breadcrumbs.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/AdminRoute.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/OsIcon.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/StdFormModal.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/styledIcon.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/TableColumnSettingsButton.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/LinedTextArea.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/MiniSparkline.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/ErrorBoundary.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/TableColumnSettings.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/SharedToolbar.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/StdSideDrawer.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/WizardShell.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/TestChart.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/OSSFilePicker.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/FeatureGate.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PrivateRoute.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/frontend/src/components/PolicyTransfer.tsx",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/index.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/RoleAssignment.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/UserSpaceAllocation.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/ThreatEvent.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/TenantLeasedLine.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/SecurityReportTask.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/Tenant.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/ServiceChain.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/Cloud.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/ProtectionObject.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/VpcNetwork.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/Organization.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/ServiceCatalog.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/User.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/RBACRole.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/ServiceInstanceRelation.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/UserSpace.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/AuditLog.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/CloudEnterpriseNetwork.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/SecurityDomain.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/ResourcePoolAssignment.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/TenantUser.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/CenAttachment.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/SecurityZone.ts",
+    "/home/ws8634/programe/Compute.Tower-main/backend/src/entities/CloudInstanceInventory.ts"
+  ]
+}
